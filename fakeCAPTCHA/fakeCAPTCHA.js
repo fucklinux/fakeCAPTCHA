@@ -1,6 +1,12 @@
+//获取当前 JS 文件所在目录
+var path = document.querySelectorAll("script")[document.querySelectorAll("script").length - 1].src.slice(0, -14);
+//初始化验证器
 function CAPTCHA(config) {
+    //传递自身
     var self = this;
+    //设置验证器状态
     this.checked = false;
+    //填充验证器元素
     document.querySelector(config.element).classList.add("captcha");
     document.querySelector(config.element).innerHTML = `<div class="captcha-clickable">
         <div class="captcha-checkbox"></div>
@@ -18,22 +24,27 @@ function CAPTCHA(config) {
             <path
                 d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
         </svg>
-        <div class="captcha-text">`+ config.textBefore + `</div>
+        <div class="captcha-text">` + config.textBefore + `</div>
     </div>
     <a class="captcha-mark" href="https://fakecaptcha.netlify.app/" target="_blank">
         <div class="captcha-mark-text">fakeCAPTCHA</div>
-        <img class="captcha-mark-logo" src="https://fakecaptcha.netlify.app/fakeCAPTCHA/fakeCAPTCHA-LOGO.png" alt="fakeCAPTCHA LOGO">
+        <img class="captcha-mark-logo" src="` + path + `fakeCAPTCHA-LOGO.png" alt="fakeCAPTCHA LOGO">
     </a>`;
+    //检测深色主题
     if (config.dark) {
         document.querySelector(config.element).classList.add("captcha-dark");
     }
+    //绑定点击事件
     document.querySelector(config.element + " .captcha-clickable").onclick = function () {
+        //寻找所需元素
         var checkbox = document.querySelector(config.element + " .captcha-checkbox");
         var spinner = document.querySelector(config.element + " .captcha-spinner");
         var success = document.querySelector(config.element + " .captcha-success");
         var failure = document.querySelector(config.element + " .captcha-failure");
         var text = document.querySelector(config.element + " .captcha-text");
-        if (self.checked != true) {
+        //避免重复验证
+        if (!self.checked) {
+            //开始验证过程
             checkbox.style.borderRadius = "50%";
             checkbox.style.transform = "scale(0)";
             checkbox.style.outlineWidth = "4px";
