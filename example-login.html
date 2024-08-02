@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=5.0">
+    <title>登录（使用示例） - fakeCAPTCHA</title>
+    <link rel="stylesheet" href="fakeCAPTCHA/fakeCAPTCHA.css">
+    <script src="fakeCAPTCHA/fakeCAPTCHA.js"></script>
+    <link rel="stylesheet" href="mdui/mdui.css">
+    <script src="mdui/mdui.global.js"></script>
+    <link rel="stylesheet" href="material-icons/material-icons.css">
+    <link rel="stylesheet" href="global.css">
+    <script src="global.js"></script>
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <style>
+        .login-card {
+            width: 90%;
+            margin: 16px 5%;
+            padding: 32px 16px;
+        }
+
+        .login-icon {
+            background: rgb(var(--mdui-color-inverse-primary));
+            border-radius: 50%;
+            font-size: 24px;
+            padding: 16px;
+        }
+
+        .login-text {
+            margin-top: 8px !important;
+        }
+
+        #captcha {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        mdui-text-field {
+            margin: 8px 0 !important;
+        }
+
+        .center {
+            width: 100%;
+            margin-left: 0;
+        }
+
+        @media(max-width:640px) {
+            #captcha {
+                margin: 24px calc(7.5% - 24px) 24px calc(7.5% - 24px);
+                width: 85%;
+            }
+        }
+
+        @media(min-width:480px) {
+            .center {
+                width: 85%;
+                margin-left: 7.5%;
+            }
+        }
+
+        @media(min-width:640px) {
+            .login-card {
+                width: 60%;
+                margin: 48px 20% 24px 20%;
+                padding: 32px;
+            }
+
+            .center {
+                width: 90%;
+                margin-left: 5%;
+            }
+        }
+
+        @media(min-width:960px) {
+            .center {
+                width: 60%;
+                margin-left: 20%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <mdui-top-app-bar scroll-behavior="elevate">
+        <mdui-button-icon icon="arrow_back" onclick="openPage('index.html');"></mdui-button-icon>
+        <mdui-top-app-bar-title onclick="openPage('index.html');"
+            style="cursor: pointer;">fakeCAPTCHA</mdui-top-app-bar-title>
+        <div style="flex-grow: 1"></div>
+        <mdui-tooltip content="GitHub" placement="bottom">
+            <mdui-button-icon onclick="openPage('https://github.com/fucklinux/fakeCAPTCHA');">
+                <mdui-icon>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 36 36"
+                        enable-background="new 0 0 36 36" xml:space="preserve" style="width: 1.5rem; height: 1.5rem;">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4c-0.2-0.4-0.7-2.1,0.2-4.3c0,0,1.4-0.4,4.5,1.7c1.3-0.4,2.7-0.5,4.1-0.5c1.4,0,2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5C34.3,8.7,27,1.4,18,1.4z">
+                        </path>
+                    </svg>
+                </mdui-icon>
+            </mdui-button-icon>
+        </mdui-tooltip>
+        <mdui-dropdown trigger="hover">
+            <mdui-button-icon id="themeSwitcher" slot="trigger"></mdui-button-icon>
+            <mdui-menu id="themeMenu" selects="single">
+                <mdui-menu-item value="light" onclick="setTheme('light');">浅色主题</mdui-menu-item>
+                <mdui-menu-item value="dark" onclick="setTheme('dark');">深色主题</mdui-menu-item>
+                <mdui-divider></mdui-divider>
+                <mdui-menu-item value="auto" onclick="setTheme('auto');">跟随浏览器</mdui-menu-item>
+            </mdui-menu>
+        </mdui-dropdown>
+    </mdui-top-app-bar>
+    <mdui-card class="login-card">
+        <div class="mdui-prose" style="text-align: center;">
+            <i class="material-icons login-icon">lock</i>
+            <h3 class="login-text">登录</h3>
+            <mdui-text-field variant="outlined" label="电子邮箱" icon="mail" type="email" id="emailInput"
+                class="center"></mdui-text-field>
+            <mdui-text-field variant="outlined" label="密码" icon="vpn_key" type="password" id="passwdInput"
+                class="center" toggle-password minlength="6"></mdui-text-field>
+        </div>
+        <div id="captcha"></div>
+        <div class="mdui-prose" style="text-align: center;">
+            <div class="center">
+                <mdui-button style="width: 100%;" onclick="login();">登录</mdui-button><br>
+                <mdui-button variant="text" style="float: left;">注册</mdui-button>
+                <mdui-button variant="text" style="float: right;">找回密码</mdui-button>
+            </div>
+        </div>
+    </mdui-card>
+    <div style="text-align: center;">Made by Burger Studio.</div>
+    <div style="margin-top: 8px;text-align: center;" class="mdui-prose">Theme: <a href="https://www.mdui.org/">MDUI</a>
+    </div>
+    <mdui-snackbar closeable id="snackbar1">请正确填写电子邮箱</mdui-snackbar>
+    <mdui-snackbar closeable id="snackbar2">请正确填写密码</mdui-snackbar>
+    <mdui-snackbar closeable id="snackbar3">请完成人机身份验证</mdui-snackbar>
+    <mdui-snackbar closeable id="snackbar4">登录成功</mdui-snackbar>
+    <script>
+        config = {
+            element: "#captcha",
+            textBefore: "进行人机身份验证",
+            textDuring: "正在进行人机身份验证",
+            textAfter: "已通过人机身份验证",
+            duration: 2000,
+            success: true,
+            dark: false
+        };
+        captcha = new CAPTCHA(config);
+        //登录
+        function login() {
+            if (document.getElementById("emailInput").value == "" || !document.getElementById("emailInput").reportValidity()) {
+                document.getElementById("snackbar1").open = true;
+                document.getElementById("emailInput").focus();
+            } else if (document.getElementById("passwdInput").value == "" || !document.getElementById("passwdInput").reportValidity()) {
+                document.getElementById("snackbar2").open = true;
+                document.getElementById("passwdInput").focus();
+            } else if (!captcha.checked) {
+                document.getElementById("snackbar3").open = true;
+            } else {
+                document.getElementById("snackbar4").open = true;
+            }
+        }
+        //在文本框中按下回车键
+        document.getElementById("emailInput").onkeyup = function (key) {
+            if (key.keyCode == 13) {
+                document.getElementById("passwdInput").focus();
+            }
+        };
+        document.getElementById("passwdInput").onkeyup = function (key) {
+            if (key.keyCode == 13) {
+                login();
+            }
+        };
+    </script>
+</body>
+
+</html>

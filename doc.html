@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=5.0">
+    <title>使用文档 - fakeCAPTCHA</title>
+    <link rel="stylesheet" href="fakeCAPTCHA/fakeCAPTCHA.css">
+    <script src="fakeCAPTCHA/fakeCAPTCHA.js"></script>
+    <link rel="stylesheet" href="mdui/mdui.css">
+    <script src="mdui/mdui.global.js"></script>
+    <link rel="stylesheet" href="material-icons/material-icons.css">
+    <link rel="stylesheet" href="global.css">
+    <script src="global.js"></script>
+    <link rel="stylesheet" href="highlight/styles/atom-one-light.min.css">
+    <script src="highlight/highlight.min.js"></script>
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+</head>
+
+<body>
+    <mdui-top-app-bar scroll-behavior="elevate">
+        <mdui-button-icon icon="arrow_back" onclick="openPage('index.html');"></mdui-button-icon>
+        <mdui-top-app-bar-title onclick="openPage('index.html');" style="cursor: pointer;">fakeCAPTCHA</mdui-top-app-bar-title>
+        <div style="flex-grow: 1"></div>
+        <mdui-tooltip content="GitHub" placement="bottom">
+            <mdui-button-icon onclick="openPage('https://github.com/fucklinux/fakeCAPTCHA');">
+                <mdui-icon>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 36 36" enable-background="new 0 0 36 36" xml:space="preserve" style="width: 1.5rem; height: 1.5rem;">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4c-0.2-0.4-0.7-2.1,0.2-4.3c0,0,1.4-0.4,4.5,1.7c1.3-0.4,2.7-0.5,4.1-0.5c1.4,0,2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5C34.3,8.7,27,1.4,18,1.4z">
+                        </path>
+                    </svg>
+                </mdui-icon>
+            </mdui-button-icon>
+        </mdui-tooltip>
+        <mdui-dropdown trigger="hover">
+            <mdui-button-icon id="themeSwitcher" slot="trigger"></mdui-button-icon>
+            <mdui-menu id="themeMenu" selects="single">
+                <mdui-menu-item value="light" onclick="setTheme('light');">浅色主题</mdui-menu-item>
+                <mdui-menu-item value="dark" onclick="setTheme('dark');">深色主题</mdui-menu-item>
+                <mdui-divider></mdui-divider>
+                <mdui-menu-item value="auto" onclick="setTheme('auto');">跟随浏览器</mdui-menu-item>
+            </mdui-menu>
+        </mdui-dropdown>
+    </mdui-top-app-bar>
+    <div class="card">
+        <div class="mdui-prose">
+            <h1>使用文档</h1>
+            <div>此文档将为你说明如何使用 fakeCAPTCHA。</div>
+            <h2 id="import-resources">
+                <a href="#import-resources" class="title-link">引入资源</a>
+            </h2>
+            <div>在页面的<code>&lt;head&gt;</code>标签中添加以下代码。</div>
+            <pre><code class="language-html hljs language-xml" id="code1">&lt;link rel="stylesheet" href="https://fakecaptcha.netlify.app/fakeCAPTCHA/fakeCAPTCHA.css"&gt;
+&lt;script src="https://fakecaptcha.netlify.app/fakeCAPTCHA/fakeCAPTCHA.js"&gt;&lt;/script&gt;</code></pre>
+            <mdui-button icon="content_copy" style="float: right;" variant="tonal" onclick="copyHandle(document.getElementById('code1').innerText);">复制代码</mdui-button>
+            <br>
+            <h2 id="create">
+                <a href="#create" class="title-link">创建验证器</a>
+            </h2>
+            <div>在想要放置验证器的位置添加以下代码。在后面的步骤中，这个元素会被初始化为一个验证器。<br>（其中的<code>id="captcha"</code>为示例属性，你可以对它进行修改。）</div>
+            <pre><code class="language-html hljs language-xml" id="code2">&lt;div id="captcha"&gt;&lt;/div&gt;</code></pre>
+            <mdui-button icon="content_copy" style="float: right;" variant="tonal" onclick="copyHandle(document.getElementById('code2').innerText);">复制代码</mdui-button>
+            <br>
+            <h2 id="config">
+                <a href="#config" class="title-link">配置验证器</a>
+            </h2>
+            <div>使用以下代码自定义并初始化验证器。</div>
+            <pre><code class="language-html hljs language-xml" id="code3">&lt;script&gt;
+    var config = {
+        element: "#captcha",
+        textBefore: "进行人机身份验证",
+        textDuring: "正在进行人机身份验证",
+        textAfter: "已通过人机身份验证",
+        duration: 2000,
+        success: true,
+        dark: false
+    };
+    captcha = new CAPTCHA(config);
+&lt;/script&gt;</code></pre>
+            <mdui-button icon="content_copy" style="float: right;" variant="tonal" onclick="copyHandle(document.getElementById('code3').innerText);">复制代码</mdui-button><br><br>
+        </div>
+        <mdui-card>
+            <mdui-collapse>
+                <mdui-collapse-item>
+                    <mdui-list-item slot="header">查看示例
+                        <mdui-icon slot="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                                <path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-40-343 237-137-237-137-237 137 237 137ZM160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11L160-252Zm320-228Z" />
+                            </svg>
+                        </mdui-icon>
+                        <i class="material-icons" slot="end-icon">keyboard_arrow_down</i>
+                    </mdui-list-item>
+                    <div id="example1"></div>
+                    <div id="example2"></div><br>
+                </mdui-collapse-item>
+            </mdui-collapse>
+        </mdui-card><br><br>
+        <div class="mdui-prose">
+            <h4 id="config-parameters"><a href="#config-parameters" class="title-link">参数</a></h4>
+            <table class="mdui-table">
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>类型</th>
+                        <th>描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th><code>element</code></th>
+                        <th><code>string</code></th>
+                        <th>验证器元素的 CSS 选择器。</th>
+                    </tr>
+                    <tr>
+                        <th><code>textBefore</code></th>
+                        <th><code>string</code></th>
+                        <th>验证前显示的文本。</th>
+                    </tr>
+                    <tr>
+                        <th><code>textDuring</code></th>
+                        <th><code>string</code></th>
+                        <th>验证过程中显示的文本。</th>
+                    </tr>
+                    <tr>
+                        <th><code>textAfter</code></th>
+                        <th><code>string</code></th>
+                        <th>验证完成后显示的文本。</th>
+                    </tr>
+                    <tr>
+                        <th><code>duration</code></th>
+                        <th><code>number</code></th>
+                        <th>验证过程用时（单位：毫秒）。</th>
+                    </tr>
+                    <tr>
+                        <th><code>success</code></th>
+                        <th><code>boolean</code></th>
+                        <th>验证是否通过。</th>
+                    </tr>
+                    <tr>
+                        <th><code>dark</code></th>
+                        <th><code>boolean</code></th>
+                        <th>验证器是否以深色主题显示。</th>
+                    </tr>
+                </tbody>
+            </table>
+            <h2 id="get-state">
+                <a href="#get-state" class="title-link">获取验证器状态</a>
+            </h2>
+            <div>验证器的<code>checked</code>属性反映其状态。当未开始验证或正在进行验证时，其值为<code>false</code>；反之则为<code>true</code>（无论验证是否通过）。
+            </div>
+            <pre><code class="language-html hljs language-xml" id="code4">&lt;button onclick="alert(captcha.checked);"&gt;获取状态&lt;/button&gt;</code></pre>
+            <mdui-button icon="content_copy" style="float: right;" variant="tonal" onclick="copyHandle(document.getElementById('code4').innerText);">复制代码</mdui-button><br><br>
+        </div>
+        <mdui-card>
+            <mdui-collapse>
+                <mdui-collapse-item>
+                    <mdui-list-item slot="header">查看示例
+                        <mdui-icon slot="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                                <path d="M440-183v-274L200-596v274l240 139Zm80 0 240-139v-274L520-457v274Zm-40-343 237-137-237-137-237 137 237 137ZM160-252q-19-11-29.5-29T120-321v-318q0-22 10.5-40t29.5-29l280-161q19-11 40-11t40 11l280 161q19 11 29.5 29t10.5 40v318q0 22-10.5 40T800-252L520-91q-19 11-40 11t-40-11L160-252Zm320-228Z" />
+                            </svg>
+                        </mdui-icon>
+                        <i class="material-icons" slot="end-icon">keyboard_arrow_down</i>
+                    </mdui-list-item>
+                    <div id="example3"></div>
+                    <mdui-button variant="filled" style="float: right;margin: 8px 16px 16px 0;" onclick="document.getElementById('getStateDialog').open = true;">获取状态</mdui-button>
+                </mdui-collapse-item>
+            </mdui-collapse>
+        </mdui-card><br><br><br><br>
+        <div class="mdui-prose">
+            <h2 id="generate-code">
+                <a href="#generate-code" class="title-link">代码生成工具</a>
+            </h2>
+            <div>使用下面的工具可快速生成验证器代码。</div>
+            <mdui-card style="padding: 24px 16px 16px 16px;margin-top: 8px;">
+                <mdui-text-field variant="outlined" icon="filter_alt" type="text" label="验证器的 CSS 选择器" value="#captcha" readonly></mdui-text-field>
+                <mdui-text-field variant="outlined" icon="text_fields" type="text" id="textBeforeInput" label="验证前的文本" value="进行人机身份验证"></mdui-text-field>
+                <mdui-text-field variant="outlined" icon="text_fields" type="text" id="textDuringInput" label="验证过程中的文本" value="正在进行人机身份验证"></mdui-text-field>
+                <mdui-text-field variant="outlined" icon="text_fields" type="text" id="textAfterInput" label="验证完成后的文本" value="已通过人机身份验证"></mdui-text-field>
+                <mdui-text-field variant="outlined" icon="av_timer" type="number" id="durationInput" label="验证过程用时（毫秒）" value="2000"></mdui-text-field>
+                <mdui-select variant="outlined" icon="check" id="successInput" label="验证处理" value="true">
+                    <mdui-menu-item value="true" onclick="document.getElementById('successInput').icon = 'check';window.setTimeout(function () { document.getElementById('successInput').value = 'true'; }, 0);">通过验证</mdui-menu-item>
+                    <mdui-menu-item value="false" onclick="document.getElementById('successInput').icon = 'close';window.setTimeout(function () { document.getElementById('successInput').value = 'false'; }, 0);">不通过验证</mdui-menu-item>
+                </mdui-select>
+                <mdui-select variant="outlined" icon="light_mode" id="darkInput" label="显示主题" value="false">
+                    <mdui-menu-item value="false" onclick="document.getElementById('darkInput').icon = 'light_mode';window.setTimeout(function () { document.getElementById('darkInput').value = 'false'; }, 0);">浅色主题</mdui-menu-item>
+                    <mdui-menu-item value="true" onclick="document.getElementById('darkInput').icon = 'dark_mode';window.setTimeout(function () { document.getElementById('darkInput').value = 'true'; }, 0);">深色主题</mdui-menu-item>
+                </mdui-select>
+                <mdui-button variant="filled" style="float: right;margin-top: 16px;" onclick="generateCode();" icon="check">生成代码</mdui-button>
+            </mdui-card>
+        </div>
+    </div>
+    <br>
+    <div style="text-align: center;">Made by Burger Studio.</div>
+            <div style="margin-top: 8px;text-align: center;" class="mdui-prose">Theme: <a href="https://www.mdui.org/">MDUI</a></div>
+    <mdui-snackbar closeable id="copied">已复制到剪贴板。</mdui-snackbar>
+    <mdui-dialog close-on-overlay-click headline="验证器状态" id="getStateDialog">
+        <div id="stateText"></div>
+        <mdui-button slot="action" variant="filled" onclick="document.getElementById('getStateDialog').open = false;">关闭</mdui-button>
+    </mdui-dialog>
+    <script>
+        config1 = {
+            element: "#example1",
+            textBefore: "进行人机身份验证",
+            textDuring: "正在进行人机身份验证",
+            textAfter: "已通过人机身份验证",
+            duration: 2000,
+            success: true,
+            dark: false
+        };
+        example1 = new CAPTCHA(config1);
+        config2 = {
+            element: "#example2",
+            textBefore: "进行人机身份验证",
+            textDuring: "正在进行人机身份验证",
+            textAfter: "出现问题，请刷新页面后重试",
+            duration: 2000,
+            success: false,
+            dark: false
+        };
+        example2 = new CAPTCHA(config2);
+        config3 = {
+            element: "#example3",
+            textBefore: "进行人机身份验证",
+            textDuring: "正在进行人机身份验证",
+            textAfter: "已通过人机身份验证",
+            duration: 2000,
+            success: true,
+            dark: false
+        };
+        example3 = new CAPTCHA(config3);
+        //加载主题
+        function loadTheme() {
+            if (localStorage.getItem("theme") == "dark") {
+                document.documentElement.classList.add("mdui-theme-dark");
+                document.documentElement.classList.remove("mdui-theme-auto");
+                document.getElementById("themeSwitcher").icon = "dark_mode";
+            } else if (localStorage.getItem("theme") == "light") {
+                document.documentElement.classList.remove("mdui-theme-dark");
+                document.documentElement.classList.remove("mdui-theme-auto");
+                document.getElementById("themeSwitcher").icon = "light_mode";
+            } else {
+                document.documentElement.classList.remove("mdui-theme-dark");
+                document.documentElement.classList.add("mdui-theme-auto");
+                localStorage.setItem("theme", "auto");
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.getElementById("themeSwitcher").icon = "dark_mode";
+                } else {
+                    document.getElementById("themeSwitcher").icon = "light_mode";
+                }
+            }
+            document.getElementById("themeMenu").value = localStorage.getItem("theme");
+        }
+        //页面加载完成时执行
+        window.onload = function() {
+            //代码高亮
+            hljs.highlightAll();
+            //折叠面板右端箭头美化
+            document.querySelectorAll("mdui-collapse-item").forEach(function(item, index) {
+                item.addEventListener("open", function() {
+                    document.querySelectorAll("mdui-collapse-item .material-icons")[index].style.transform = "rotateX(180deg)";
+                });
+                item.addEventListener("close", function() {
+                    document.querySelectorAll("mdui-collapse-item .material-icons")[index].style.transform = "rotateX(0deg)";
+                });
+            });
+        }
+        //复制文本
+        function copyHandle(content) {
+            let copy = (e) => {
+                e.preventDefault()
+                e.clipboardData.setData('text/plain', content)
+                document.removeEventListener('copy', copy)
+            }
+            document.addEventListener('copy', copy)
+            document.execCommand("Copy");
+            document.getElementById("copied").open = true;
+        }
+        //获取验证器状态
+        document.getElementById("getStateDialog").addEventListener("open", function() {
+            document.getElementById("stateText").innerText = example3.checked ? "已完成验证。" : "未完成验证。";
+        });
+        //生成代码
+        function generateCode() {
+            var code = `<link rel="stylesheet" href="https://fakecaptcha.netlify.app/fakeCAPTCHA/fakeCAPTCHA.css">
+<script src="https://fakecaptcha.netlify.app/fakeCAPTCHA/fakeCAPTCHA.js"><` + `/script>
+<div id="captcha"></div>
+<script>
+    var config = {
+        element: "#captcha",
+        textBefore: "` + document.getElementById("textBeforeInput").value + `",
+        textDuring: "` + document.getElementById("textDuringInput").value + `",
+        textAfter: "` + document.getElementById("textAfterInput").value + `",
+        duration: ` + document.getElementById("durationInput").value + `,
+        success: ` + document.getElementById("successInput").value + `,
+        dark: ` + document.getElementById("darkInput").value + `
+    };
+    captcha = new CAPTCHA(config);
+<` + `/script>`;
+            copyHandle(code);
+        }
+    </script>
+</body>
+
+</html>
