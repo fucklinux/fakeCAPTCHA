@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=5.0">
-    <title>登录（使用示例） - fakeCAPTCHA</title>
+    <title zh="登录（使用示例） - fakeCAPTCHA" en="Login (Example) - fakeCAPTCHA"></title>
     <link rel="stylesheet" href="fakeCAPTCHA/fakeCAPTCHA.css">
-    <script src="fakeCAPTCHA/fakeCAPTCHA.js"></script>
+    <script src="fakeCAPTCHA-special/fakeCAPTCHA.js"></script>
     <link rel="stylesheet" href="mdui/mdui.css">
     <script src="mdui/mdui.global.js"></script>
     <link rel="stylesheet" href="material-icons/material-icons.css">
@@ -87,6 +87,13 @@
         <mdui-top-app-bar-title onclick="openPage('index.html');"
             style="cursor: pointer;">fakeCAPTCHA</mdui-top-app-bar-title>
         <div style="flex-grow: 1"></div>
+        <mdui-dropdown trigger="hover">
+            <mdui-button-icon slot="trigger" icon="translate"></mdui-button-icon>
+            <mdui-menu id="langMenu" selects="single">
+                <mdui-menu-item value="en" onclick="setLang('en');">English</mdui-menu-item>
+                <mdui-menu-item value="zh" onclick="setLang('zh');">简体中文</mdui-menu-item>
+            </mdui-menu>
+        </mdui-dropdown>
         <mdui-tooltip content="GitHub" placement="bottom">
             <mdui-button-icon onclick="openPage('https://github.com/fucklinux/fakeCAPTCHA');">
                 <mdui-icon>
@@ -102,44 +109,45 @@
         <mdui-dropdown trigger="hover">
             <mdui-button-icon id="themeSwitcher" slot="trigger"></mdui-button-icon>
             <mdui-menu id="themeMenu" selects="single">
-                <mdui-menu-item value="light" onclick="setTheme('light');">浅色主题</mdui-menu-item>
-                <mdui-menu-item value="dark" onclick="setTheme('dark');">深色主题</mdui-menu-item>
+                <mdui-menu-item value="light" onclick="setTheme('light');" zh="浅色主题" en="Light"></mdui-menu-item>
+                <mdui-menu-item value="dark" onclick="setTheme('dark');" zh="深色主题" en="Dark"></mdui-menu-item>
                 <mdui-divider></mdui-divider>
-                <mdui-menu-item value="auto" onclick="setTheme('auto');">跟随浏览器</mdui-menu-item>
+                <mdui-menu-item value="auto" onclick="setTheme('auto');" zh="跟随浏览器"
+                    en="Follow browser"></mdui-menu-item>
             </mdui-menu>
         </mdui-dropdown>
     </mdui-top-app-bar>
     <mdui-card class="login-card">
         <div class="mdui-prose" style="text-align: center;">
             <i class="material-icons login-icon">lock</i>
-            <h3 class="login-text">登录</h3>
-            <mdui-text-field variant="outlined" label="电子邮箱" icon="mail" type="email" id="emailInput"
-                class="center"></mdui-text-field>
-            <mdui-text-field variant="outlined" label="密码" icon="vpn_key" type="password" id="passwdInput"
-                class="center" toggle-password minlength="6"></mdui-text-field>
+            <h3 class="login-text" zh="登录" en="Login"></h3>
+            <mdui-text-field variant="outlined" zh-label="电子邮箱" en-label="Email" icon="mail" type="email"
+                id="emailInput" class="center" enterkeyhint="next"></mdui-text-field>
+            <mdui-text-field variant="outlined" zh-label="密码" en-label="Password" icon="vpn_key" type="password"
+                id="passwdInput" class="center" toggle-password minlength="6" enterkeyhint="done"></mdui-text-field>
         </div>
         <div id="captcha"></div>
         <div class="mdui-prose" style="text-align: center;">
             <div class="center">
-                <mdui-button style="width: 100%;" onclick="login();">登录</mdui-button><br>
-                <mdui-button variant="text" style="float: left;">注册</mdui-button>
-                <mdui-button variant="text" style="float: right;">找回密码</mdui-button>
+                <mdui-button style="width: 100%;" onclick="login();" zh="登录" en="Login"></mdui-button><br>
+                <mdui-button variant="text" style="float: left;" zh="注册" en="Register"></mdui-button>
+                <mdui-button variant="text" style="float: right;" zh="找回密码" en="Reset password"></mdui-button>
             </div>
         </div>
     </mdui-card>
     <div style="text-align: center;">Made by Burger Studio.</div>
     <div style="margin-top: 8px;text-align: center;" class="mdui-prose">Theme: <a href="https://www.mdui.org/">MDUI</a>
     </div>
-    <mdui-snackbar closeable id="snackbar1">请填写正确的电子邮箱</mdui-snackbar>
-    <mdui-snackbar closeable id="snackbar2">请填写正确的密码</mdui-snackbar>
-    <mdui-snackbar closeable id="snackbar3">请完成人机身份验证</mdui-snackbar>
-    <mdui-snackbar closeable id="snackbar4">登录成功</mdui-snackbar>
+    <mdui-snackbar closeable id="snackbar1" zh="请填写正确的电子邮箱" en="Please enter a valid email"></mdui-snackbar>
+    <mdui-snackbar closeable id="snackbar2" zh="请填写正确的密码" en="Please enter a valid password"></mdui-snackbar>
+    <mdui-snackbar closeable id="snackbar3" zh="请完成人机身份验证" en="Please complete CAPTCHA"></mdui-snackbar>
+    <mdui-snackbar closeable id="snackbar4" zh="登录成功" en="Success"></mdui-snackbar>
     <script>
         config = {
             element: "#captcha",
-            textBefore: "进行人机身份验证",
-            textDuring: "正在进行人机身份验证",
-            textAfter: "已通过人机身份验证",
+            textBefore: `<div zh="进行人机身份验证" en="I'm not a robot"></div>`,
+            textDuring: `<div zh="正在进行人机身份验证" en="Verifying..."></div>`,
+            textAfter: `<div zh="已通过人机身份验证" en="Success"></div>`,
             duration: 2000,
             success: true,
             dark: false
@@ -159,7 +167,7 @@
                 document.getElementById("snackbar4").open = true;
             }
         }
-        //在文本框中按下回车键
+        //在文本框中按下回车键触发
         document.getElementById("emailInput").onkeyup = function (key) {
             if (key.keyCode == 13) {
                 document.getElementById("passwdInput").focus();

@@ -132,7 +132,7 @@ mdui-card {
     margin-top: 16px;
 }
 
-.btn-generator {
+.btn-generate {
     margin-left: 12px;
 }
 
@@ -166,7 +166,7 @@ mdui-card {
         transform: scale(1.25);
     }
 
-    .btn-generator {
+    .btn-generate {
         margin-left: 48px;
     }
 
@@ -185,4 +185,9 @@ mdui-card {
         margin-top: 0 !important;
     }
 
+}
+
+.inline {
+    display: inline;
+    vertical-align: middle;
 }

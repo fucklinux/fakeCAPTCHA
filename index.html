@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=5.0">
     <title>fakeCAPTCHA</title>
     <link rel="stylesheet" href="fakeCAPTCHA/fakeCAPTCHA.css">
-    <script src="fakeCAPTCHA/fakeCAPTCHA.js"></script>
+    <script src="fakeCAPTCHA-special/fakeCAPTCHA.js"></script>
     <link rel="stylesheet" href="mdui/mdui.css">
     <script src="mdui/mdui.global.js"></script>
     <link rel="stylesheet" href="material-icons/material-icons.css">
@@ -20,12 +20,20 @@
         <mdui-top-app-bar-title>fakeCAPTCHA</mdui-top-app-bar-title>
         <div style="flex-grow: 1"></div>
         <mdui-dropdown trigger="hover">
+            <mdui-button-icon slot="trigger" icon="translate"></mdui-button-icon>
+            <mdui-menu id="langMenu" selects="single">
+                <mdui-menu-item value="en" onclick="setLang('en');">English</mdui-menu-item>
+                <mdui-menu-item value="zh" onclick="setLang('zh');">简体中文</mdui-menu-item>
+            </mdui-menu>
+        </mdui-dropdown>
+        <mdui-dropdown trigger="hover">
             <mdui-button-icon id="themeSwitcher" slot="trigger"></mdui-button-icon>
             <mdui-menu id="themeMenu" selects="single">
-                <mdui-menu-item value="light" onclick="setTheme('light');">浅色主题</mdui-menu-item>
-                <mdui-menu-item value="dark" onclick="setTheme('dark');">深色主题</mdui-menu-item>
+                <mdui-menu-item value="light" onclick="setTheme('light');" zh="浅色主题" en="Light"></mdui-menu-item>
+                <mdui-menu-item value="dark" onclick="setTheme('dark');" zh="深色主题" en="Dark"></mdui-menu-item>
                 <mdui-divider></mdui-divider>
-                <mdui-menu-item value="auto" onclick="setTheme('auto');">跟随浏览器</mdui-menu-item>
+                <mdui-menu-item value="auto" onclick="setTheme('auto');" zh="跟随浏览器"
+                    en="Follow browser"></mdui-menu-item>
             </mdui-menu>
         </mdui-dropdown>
     </mdui-top-app-bar>
@@ -33,18 +41,20 @@
         <div style="text-align: center;">
             <img src="favicon.png" alt="fakeCAPTCHA LOGO" class="logo">
             <h1 class="index-title">fakeCAPTCHA</h1>
-            <div>由 Burger Studio 设计的伪 CAPTCHA（人机身份验证）组件，可自定义显示内容。</div>
+            <div zh="由 Burger Studio 设计的伪 CAPTCHA（人机身份验证）组件，可自定义显示内容。"
+                en="A fake CAPTCHA component designed by Burger Studio that allows customization.">由 Burger Studio 设计的伪
+                CAPTCHA（人机身份验证）组件，可自定义显示内容。</div>
         </div><br>
     </div>
     <div id="captcha"></div><br>
     <div class="mdui-prose">
         <div style="text-align: center;">
-            <mdui-button variant="filled" onclick="openPage('doc.html');" icon="sticky_note_2"
-                class="index-btn">使用文档</mdui-button>
+            <mdui-button variant="filled" onclick="openPage('doc.html');" icon="sticky_note_2" class="index-btn"
+                zh="使用文档" en="Usage"></mdui-button>
             <mdui-button variant="filled" onclick="openPage('doc.html#generate-code');" icon="code"
-                class="index-btn btn-generator">生成代码</mdui-button><br>
-            <mdui-button variant="tonal" onclick="openPage('example-login.html');"
-                class="index-btn btn-example">使用示例：登录页面
+                class="index-btn btn-generate" zh="生成代码" en="Generate Code "></mdui-button><br>
+            <mdui-button variant="tonal" onclick="openPage('example-login.html');" class="index-btn btn-example">
+                <div zh="使用示例：登录页面" en="Example: Login Page"></div>
                 <mdui-icon slot="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
                         <path
@@ -53,7 +63,8 @@
                 </mdui-icon>
             </mdui-button><br>
             <mdui-button variant="text" onclick="openPage('https://github.com/fucklinux/fakeCAPTCHA');"
-                class="index-btn">在 GitHub 中查看
+                class="index-btn">
+                <div zh="在 GitHub 中查看" en="View on GitHub"></div>
                 <mdui-icon slot="icon" style="transform: translateY(-2.5px);margin-right: 8px;">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 36 36"
                         enable-background="new 0 0 36 36" xml:space="preserve" style="width: 1.5rem; height: 1.5rem;">
@@ -69,9 +80,9 @@
     <script>
         var config = {
             element: "#captcha",
-            textBefore: "进行人机身份验证",
-            textDuring: "正在进行人机身份验证",
-            textAfter: "已通过人机身份验证",
+            textBefore: `<div zh="进行人机身份验证" en="I'm not a robot"></div>`,
+            textDuring: `<div zh="正在进行人机身份验证" en="Verifying..."></div>`,
+            textAfter: `<div zh="已通过人机身份验证" en="Success"></div>`,
             duration: 2000,
             success: true,
             dark: false
