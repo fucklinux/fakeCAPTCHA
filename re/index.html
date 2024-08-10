@@ -11,7 +11,11 @@
     <style>
         html,
         body {
-            background: #ddd;
+            background: #eee;
+        }
+
+        .rc-button {
+            transition: 0.1s;
         }
 
         @media(max-width:416px) {
@@ -20,7 +24,39 @@
             }
 
             .reCAPTCHA-container {
-                height: 494.41695px !important;
+                height: 516.9698911764706px !important;
+            }
+
+            #reCAPTCHA_tip_text_1,
+            #reCAPTCHA_tip_text_3 {
+                font-size: 14px !important;
+            }
+
+            #reCAPTCHA_tip_text_2 {
+                font-size: 32px !important;
+            }
+
+            .rc-imageselect-desc-wrapper {
+                height: 77.64705882352941px !important;
+            }
+
+            .rc-imageselect-instructions {
+                height: 124.9647058823529px !important;
+            }
+
+            #recaptcha-verify-button {
+                font-size: 16.5px !important;
+                min-width: 117.6470588235294px !important;
+                height: 49.41176470588235px !important;
+            }
+
+            .rc-button {
+                width: 56.47058823529412px !important;
+                height: 56.47058823529412px !important;
+            }
+
+            .primary-controls {
+                height: 70.58823529411765px !important;
             }
         }
 
@@ -30,7 +66,39 @@
             }
 
             .reCAPTCHA-container {
-                height: 436.25025px !important;
+                height: 478.85025px !important;
+            }
+
+            #reCAPTCHA_tip_text_1,
+            #reCAPTCHA_tip_text_3 {
+                font-size: 16px !important;
+            }
+
+            #reCAPTCHA_tip_text_2 {
+                font-size: 37px !important;
+            }
+
+            .rc-imageselect-desc-wrapper {
+                height: 88px !important;
+            }
+
+            .rc-imageselect-instructions {
+                height: 135.6px !important;
+            }
+
+            #recaptcha-verify-button {
+                font-size: 18.5px !important;
+                min-width: 133.3333333333333px !important;
+                height: 56px !important;
+            }
+
+            .rc-button {
+                width: 64px !important;
+                height: 64px !important;
+            }
+
+            .primary-controls {
+                height: 80px !important;
             }
         }
     </style>
@@ -1788,12 +1856,13 @@
             <div class="rc-imageselect-response-field"></div><span class="rc-imageselect-tabloop-begin"
                 tabindex="0"></span>
             <div class="rc-imageselect-payload">
-                <div class="rc-imageselect-instructions">
-                    <div class="rc-imageselect-desc-wrapper">
+                <div class="rc-imageselect-instructions" style="transition: 0.1s;">
+                    <div class="rc-imageselect-desc-wrapper" style="transition: 0.1s;">
                         <div class="rc-imageselect-desc-no-canonical" style="width: 252px; font-size: 12px;">
-                            <div id="reCAPTCHA_tip_text_1"></div><strong style="font-size: 28px;"
-                                id="reCAPTCHA_tip_text_2"></strong>
-                            <div id="reCAPTCHA_tip_text_3"></div><span class="rc-imageselect-carousel-instructions"
+                            <div id="reCAPTCHA_tip_text_1" style="transition: 0.1s;"></div><strong
+                                style="font-size: 28px;" id="reCAPTCHA_tip_text_2" style="transition: 0.1s;"></strong>
+                            <div id="reCAPTCHA_tip_text_3" style="transition: 0.1s;"></div><span
+                                class="rc-imageselect-carousel-instructions"
                                 style="font-size: 14px;display: none;">如果没有，请点击“跳过”。</span>
                         </div>
                     </div>
@@ -1818,7 +1887,7 @@
             <div class="rc-footer">
                 <div class="rc-separator"></div>
                 <div class="rc-controls">
-                    <div class="primary-controls">
+                    <div class="primary-controls" style="transition: 0.1s;">
                         <div class="rc-buttons">
                             <div class="button-holder reload-button-holder"><button
                                     class="rc-button goog-inline-block rc-button-reload" title="换一个新的验证码" value=""
@@ -1837,7 +1906,8 @@
                                     id="recaptcha-undo-button" tabindex="0" style="display: none;"></button></div>
                         </div>
                         <div class="verify-button-holder"><button class="rc-button-default goog-inline-block" title=""
-                                value="" id="recaptcha-verify-button" tabindex="0">验证</button></div>
+                                value="" id="recaptcha-verify-button" tabindex="0" style="transition: 0.1s;">验证</button>
+                        </div>
                     </div>
                     <div class="rc-challenge-help" style="display:none" tabindex="0"></div>
                 </div>
