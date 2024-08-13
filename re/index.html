@@ -50,7 +50,8 @@
             transition: 0.15s;
         }
 
-        .button:hover {
+        .button:hover,
+        button:focus {
             outline: 2px solid rgba(0, 0, 0, 0.5);
         }
 
@@ -59,6 +60,36 @@
             outline: 2px solid rgba(0, 0, 0, 0.5);
             background: #ccc;
             transition: outline 0s;
+        }
+
+        #dropDiv {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.75);
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+
+        #dropDiv_content {
+            position: fixed;
+            left: 16px;
+            top: 16px;
+            width: calc(100% - 32px);
+            height: calc(100% - 32px);
+            outline: 4px dashed rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+        }
+
+        #dropDiv_content div {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: calc(50% - 12px);
+            font-size: 24px;
         }
 
         @media(max-width:416px) {
@@ -1894,7 +1925,7 @@
         <button style="margin-right: 16px;" onclick="document.querySelector('#reCAPTCHA_image_input').click();"
             class="button">选择图片</button>
         <input type="file" id="reCAPTCHA_image_input" accept="image/*" style="display: none;">
-        <button style="margin-top: 8px;" onclick="generate();" class="button">生成</button>
+        <button style="margin-top: 8px;" onclick="generate();" class="button" id="generateBtn">生成</button>
     </div>
     <div style="overflow: hidden;">
         <div class="reCAPTCHA-container"
@@ -1967,11 +1998,16 @@
         </div>
     </div>
     <p style="text-align: center;background: #eee;padding: 16px 0;margin-bottom: 0;">Made by Burger Studio.</p>
+    <div id="dropDiv">
+        <div id="dropDiv_content">
+            <div>释放鼠标读取图片</div>
+        </div>
+    </div>
     <script>
         // 页面加载完成时执行
         window.onload = function () {
             // 生成验证器
-            generate();
+            generate(true);
             // 触摸屏优化
             var touchElements = ["input", "button"];
             var touchDelay = [150, 100];
@@ -1979,17 +2015,36 @@
                 document.querySelectorAll("." + item).forEach(function (itemObj, index) {
                     itemObj.ontouchstart = function () {
                         itemObj.classList.add(item + "-active");
-                    }
+                    };
                     itemObj.ontouchend = function () {
                         window.setTimeout(function () {
                             itemObj.classList.remove(item + "-active");
                         }, touchDelay[delayIndex]);
-                    }
+                    };
+                });
+            });
+            // 键盘操作优化
+            var enterElements = ["button"];
+            var enterDelay = [100];
+            enterElements.forEach(function (item, delayIndex) {
+                document.querySelectorAll("." + item).forEach(function (itemObj, index) {
+                    itemObj.addEventListener("keydown", function (key) {
+                        if (key.keyCode == 13) {
+                            itemObj.classList.add(item + "-active");
+                        }
+                    });
+                    itemObj.addEventListener("keyup", function (key) {
+                        if (key.keyCode == 13) {
+                            window.setTimeout(function () {
+                                itemObj.classList.remove(item + "-active");
+                            }, enterDelay[delayIndex]);
+                        }
+                    });
                 });
             });
         }
         // 生成图片验证器
-        function generate() {
+        function generate(isInit) {
             var alertText = "";
             if (!(document.querySelector("#reCAPTCHA_image_table_scale_input").value > 0 && document.querySelector("#reCAPTCHA_image_table_scale_input").value % 1 === 0)) {
                 alertText += "图片分割程度应为正整数。\n";
@@ -2000,17 +2055,18 @@
             if (alertText != "") {
                 alert(alertText);
             } else {
-                loadTable(document.querySelector("#reCAPTCHA_image_table_scale_input").value);
+                loadTable(document.querySelector("#reCAPTCHA_image_table_scale_input").value, isInit);
                 document.querySelector("#reCAPTCHA_tip_text_1").innerText = document.querySelector("#reCAPTCHA_tip_input_1").value;
                 document.querySelector("#reCAPTCHA_tip_text_2").innerText = document.querySelector("#reCAPTCHA_tip_input_2").value;
                 document.querySelector("#reCAPTCHA_tip_text_3").innerText = document.querySelector("#reCAPTCHA_tip_input_3").value;
                 document.querySelectorAll(".rc-image-tile-44").forEach(function (item) {
                     item.setAttribute("src", document.querySelector("#reCAPTCHA_image_src_input").value);
                 });
+                log(isInit ? "页面初始化完毕。" : "图片验证器成功生成。");
             }
         }
-        // 分割拼图
-        function loadTable(scale) {
+        // 分割图片
+        function loadTable(scale, isInit) {
             var html = "";
             for (var i = 0; i < scale; i++) {
                 html += "<tr>";
@@ -2028,6 +2084,7 @@
                 html += "</tr>";
             }
             document.querySelector("#reCAPTCHA_image_table").innerHTML = html;
+            isInit ? undefined : log("图片分割完毕。");
         }
         // 按回车键切换文本框 / 生成验证器
         document.querySelector("#reCAPTCHA_tip_input_1").onkeyup = function (e) {
@@ -2052,6 +2109,7 @@
         };
         document.querySelector("#reCAPTCHA_image_src_input").onkeyup = function (e) {
             if (e.keyCode == 13) {
+                document.querySelector("#generateBtn").focus();
                 generate();
             }
         };
@@ -2068,10 +2126,60 @@
                 var reader = new FileReader();
                 reader.onloadend = function (e) {
                     document.querySelector("#reCAPTCHA_image_src_input").value = e.target.result;
+                    log("图片读取完毕。");
+                    generate();
                 }
                 reader.readAsDataURL(file);
             }
         };
+        // 输出日志
+        function log(message) {
+            var date = new Date();
+            console.log("[" + String(date.getHours()).padStart(2, "0") + ":" + String(date.getMinutes()).padStart(2, "0") + ":" + String(date.getSeconds()).padStart(2, "0") + "] " + message);
+        }
+        // 拖放图片
+        // 参考文章：https://segmentfault.com/a/1190000004924160
+        document.addEventListener("dragenter", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.querySelector("#dropDiv").style.opacity = 1;
+            dragLastElem = e.target;
+        });
+        document.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+        document.addEventListener("dragleave", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (dragLastElem == e.target) {
+                document.querySelector("#dropDiv").style.opacity = 0;
+            }
+        });
+        document.addEventListener("drop", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.querySelector("#dropDiv").style.opacity = 0;
+            var dt = e.dataTransfer;
+            if (dt.items !== undefined) {
+                // 对 Chrome 的单独处理
+                for (var i = 0; i < dt.items.length; i++) {
+                    var item = dt.items[i];
+                    // 禁止上传目录
+                    if (item.kind === "file" && item.webkitGetAsEntry().isFile && item.type.indexOf("image") != -1) {
+                        var reader = new FileReader();
+                        reader.onloadend = function (e1) {
+                            document.querySelector("#reCAPTCHA_image_src_input").value = e1.target.result;
+                            log("图片读取完毕。");
+                            generate();
+                        }
+                        reader.readAsDataURL(dt.files[0]);
+                    } else {
+                        alert("文件类型无效。");
+                    }
+                }
+            }
+        });
     </script>
 </body>
 
